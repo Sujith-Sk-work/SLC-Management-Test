@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>SL DEMO</title>
+</head>
+<body>
+    <h1 style="padding-left: 35%;">SLC Managament</h1>
+    <div class="Container " style="padding-left:35% ; padding-top: 15%;">
+        <button class="btn btn-primary" onclick="onFunction()">ON</button>
+        <button  class="btn btn-danger"   onclick="offFunction()">OFF</button>
+    </div>
+    <div class="container">
+        <ul id="main">
+
+        </ul>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket= io.connect('http://localhost:5000');
+        socket.on('queue1',(data)=>{
+            console.log(data);
+            
+            var node = document.createElement('li');
+            node.appendChild(document.createTextNode(data.Message));
+
+            document.querySelector('ul').appendChild(node);
+            
+        })
+
+        socket.on('queue1',(data)=>{
+            console.log(data);
+        })
+
+        function onFunction(){
+            socket.emit('Turn-On',{command: 'On'});
+        }
+
+        function offFunction(){
+            socket.emit('Turn-Off',{command:'off'});
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+    <div id="container" style="width:100%; height: 100%;"></div>
+    <script>
+        anychart.onDocumentReady(function(){
+        var data = {
+        rows: [
+            ["San-Francisco (1906)", 1500],
+            ["Messina (1908)", 87000],
+            ["Ashgabat (1948)", 175000],
+            ["Chile (1960)", 10000],
+            ["Tian Shan (1976)", 242000],
+            ["Armenia (1988)", 25000],
+            ["Iran (1990)", 50000]
+        ]};
+        
+        var chart = anychart.bar();
+
+        chart.data(data);
+
+        chart.title("hello");
+
+        chart.container('container');
+        chart.draw();
+    });
+
+
+
+
+
+    </script>
+</body>
+</html>
